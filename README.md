@@ -84,7 +84,7 @@ cvmaker/
 
 ## 📜 Lisans
 
-Bu proje MIT Lisansı ile lisanslanmıştır - detaylar için [LICENSE](LICENSE) dosyasına bakın.
+Bu proje Creative Commons Attribution-NonCommercial 4.0 International Lisansı ile lisanslanmıştır - detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
 ## 🙏 Teşekkürler
 
