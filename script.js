@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     let cvData = {
         template: 'minimal',
         primaryColor: '#2563eb',
@@ -147,7 +147,7 @@
             },
             qr: {
                 include: true,
-                type: 'github'
+                type: 'linkedin'
             }
         };
 
@@ -234,10 +234,19 @@
         const fullPreviewContainer = document.getElementById('fullPreviewContainer');
         const cvDocument = document.getElementById('cvDocument').cloneNode(true);
         
+        // Önizleme alanını temizle
         fullPreviewContainer.innerHTML = '';
         
+        // CV belgesini önizleme modunu ayarla
+        cvDocument.style.width = '100%';
+        cvDocument.style.maxWidth = '794px';
+        cvDocument.style.margin = '0 auto';
+        cvDocument.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+        
+        // Belgeyi ekle
         fullPreviewContainer.appendChild(cvDocument);
         
+        // Modalı göster
         document.getElementById('fullPreviewModal').classList.add('active');
     }
 
@@ -861,7 +870,10 @@ function selectColorScheme(color) {
             case 'website':
                 qrData = cvData.socials.website || 'https://example.com';
                 break;
-            case 'contact':
+            case 'github':
+                qrData = cvData.socials.website || 'https://example.com';
+                break;
+            case 'vcard':
                 qrData = `BEGIN:VCARD
 VERSION:3.0
 N:${cvData.personalInfo.lastName};${cvData.personalInfo.firstName};;;
@@ -888,67 +900,214 @@ END:VCARD`;
     }
     
     function exportAsPDF() {
-        const { jsPDF } = window.jspdf;
+        // Kullanıcıya bilgi ver
+        alert("CV PDF olarak hazırlanıyor. Bu işlem biraz zaman alabilir.");
         
+        // CV elementini al
         const cvElement = document.getElementById('cvDocument');
         
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        // Geçici stiller uygula
+        const originalStyles = {};
+        originalStyles.width = cvElement.style.width;
+        originalStyles.height = cvElement.style.height;
+        originalStyles.maxWidth = cvElement.style.maxWidth;
+        originalStyles.overflow = cvElement.style.overflow;
         
+        // Element'i A4 boyutuna getir
+        cvElement.style.width = '794px';
+        cvElement.style.maxWidth = '794px';
+        cvElement.style.height = 'auto';
+        cvElement.style.overflow = 'visible';
+        
+        // Tüm içeriğin görünür olduğunu doğrula
+        const allElements = cvElement.querySelectorAll('*');
+        const originalVisibility = [];
+        
+        // Her elementin görünürlüğünü kaydet ve görünür yap
+        allElements.forEach((el, index) => {
+            originalVisibility[index] = {
+                visibility: el.style.visibility,
+                display: el.style.display,
+                opacity: el.style.opacity
+            };
+            
+            el.style.visibility = 'visible';
+            el.style.display = el.tagName.toLowerCase() === 'div' ? 'block' : '';
+            el.style.opacity = '1';
+        });
+        
+        // HTML2Canvas kullanarak görüntü al
         html2canvas(cvElement, {
-            scale: 2,
+            scale: 1,
             useCORS: true,
-            logging: false
+            allowTaint: true,
+            backgroundColor: '#FFFFFF',
+            windowWidth: 794,
+            scrollY: 0,
+            height: cvElement.scrollHeight,
+            onclone: function(clonedDoc) {
+                const clonedElement = clonedDoc.getElementById('cvDocument');
+                clonedElement.style.height = 'auto';
+                clonedElement.style.position = 'relative';
+                clonedElement.style.overflow = 'visible';
+            }
         }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
+            // jsPDF kütüphanesini kullanarak PDF oluştur
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'pt', 'a4');
             
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
+            // Sayfaları hesapla
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
             
-            const canvasRatio = canvas.height / canvas.width;
+            // Ölçekleri hesapla
+            const ratio = pdfWidth / imgWidth;
+            const imgPageHeight = imgHeight * ratio;
+            const pageCount = Math.ceil(imgPageHeight / pdfHeight);
             
-            const imgWidth = pageWidth;
-            const imgHeight = imgWidth * canvasRatio;
+            // İlk sayfayı ekle
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, imgPageHeight);
             
-            let heightLeft = imgHeight;
-            let position = 0;
-            
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-            
-            while (heightLeft > 0) {
-                position = heightLeft - imgHeight;
+            // Eğer birden fazla sayfa varsa, diğer sayfaları ekle
+            for(let i = 1; i < pageCount; i++) {
                 pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
+                pdf.addImage(
+                    imgData, 
+                    'JPEG', 
+                    0, 
+                    -(pdfHeight * i), 
+                    pdfWidth, 
+                    imgPageHeight
+                );
             }
             
-            const fileName = `${cvData.personalInfo.firstName || 'Ad'}_${cvData.personalInfo.lastName || 'Soyad'}_CV.pdf`;
+            // PDF'i indir
+            pdf.save("CV.pdf");
             
-            pdf.save(fileName);
+            // Orijinal stilleri geri yükle
+            cvElement.style.width = originalStyles.width;
+            cvElement.style.height = originalStyles.height;
+            cvElement.style.maxWidth = originalStyles.maxWidth;
+            cvElement.style.overflow = originalStyles.overflow;
             
-            closeAllModals();
+            // Elementlerin orijinal görünürlüğünü geri yükle
+            allElements.forEach((el, index) => {
+                el.style.visibility = originalVisibility[index].visibility;
+                el.style.display = originalVisibility[index].display;
+                el.style.opacity = originalVisibility[index].opacity;
+            });
+            
+        }).catch(error => {
+            console.error("PDF oluşturma hatası:", error);
+            alert("PDF oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.");
+            
+            // Hata durumunda orijinal stilleri geri yükle
+            cvElement.style.width = originalStyles.width;
+            cvElement.style.height = originalStyles.height;
+            cvElement.style.maxWidth = originalStyles.maxWidth;
+            cvElement.style.overflow = originalStyles.overflow;
+            
+            // Elementlerin orijinal görünürlüğünü geri yükle
+            allElements.forEach((el, index) => {
+                el.style.visibility = originalVisibility[index].visibility;
+                el.style.display = originalVisibility[index].display;
+                el.style.opacity = originalVisibility[index].opacity;
+            });
         });
     }
     
     function exportAsPNG() {
+        // Kullanıcıya bilgi ver
+        alert("CV PNG olarak hazırlanıyor. Bu işlem biraz zaman alabilir.");
+        
+        // CV elementini al
         const cvElement = document.getElementById('cvDocument');
         
+        // Geçici stiller uygula
+        const originalStyles = {};
+        originalStyles.width = cvElement.style.width;
+        originalStyles.height = cvElement.style.height;
+        originalStyles.maxWidth = cvElement.style.maxWidth;
+        originalStyles.overflow = cvElement.style.overflow;
+        
+        // Element'i A4 boyutuna getir
+        cvElement.style.width = '794px';
+        cvElement.style.maxWidth = '794px';
+        cvElement.style.height = 'auto';
+        cvElement.style.overflow = 'visible';
+        
+        // Tüm içeriğin görünür olduğunu doğrula
+        const allElements = cvElement.querySelectorAll('*');
+        const originalVisibility = [];
+        
+        // Her elementin görünürlüğünü kaydet ve görünür yap
+        allElements.forEach((el, index) => {
+            originalVisibility[index] = {
+                visibility: el.style.visibility,
+                display: el.style.display,
+                opacity: el.style.opacity
+            };
+            
+            el.style.visibility = 'visible';
+            el.style.display = el.tagName.toLowerCase() === 'div' ? 'block' : '';
+            el.style.opacity = '1';
+        });
+        
+        // HTML2Canvas kullanarak görüntü al
         html2canvas(cvElement, {
             scale: 2,
             useCORS: true,
-            backgroundColor: null
+            allowTaint: true,
+            backgroundColor: '#FFFFFF',
+            windowWidth: 794,
+            scrollY: 0,
+            height: cvElement.scrollHeight,
+            onclone: function(clonedDoc) {
+                const clonedElement = clonedDoc.getElementById('cvDocument');
+                clonedElement.style.height = 'auto';
+                clonedElement.style.position = 'relative';
+                clonedElement.style.overflow = 'visible';
+            }
         }).then(canvas => {
+            // Canvas'ı PNG olarak indir
             const imgData = canvas.toDataURL('image/png');
-            
             const link = document.createElement('a');
+            link.download = 'CV.png';
             link.href = imgData;
-            link.download = `${cvData.personalInfo.firstName || 'Ad'}_${cvData.personalInfo.lastName || 'Soyad'}_CV.png`;
-            
-            document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
             
-            closeAllModals();
+            // Orijinal stilleri geri yükle
+            cvElement.style.width = originalStyles.width;
+            cvElement.style.height = originalStyles.height;
+            cvElement.style.maxWidth = originalStyles.maxWidth;
+            cvElement.style.overflow = originalStyles.overflow;
+            
+            // Elementlerin orijinal görünürlüğünü geri yükle
+            allElements.forEach((el, index) => {
+                el.style.visibility = originalVisibility[index].visibility;
+                el.style.display = originalVisibility[index].display;
+                el.style.opacity = originalVisibility[index].opacity;
+            });
+            
+        }).catch(error => {
+            console.error("PNG oluşturma hatası:", error);
+            alert("PNG oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.");
+            
+            // Hata durumunda orijinal stilleri geri yükle
+            cvElement.style.width = originalStyles.width;
+            cvElement.style.height = originalStyles.height;
+            cvElement.style.maxWidth = originalStyles.maxWidth;
+            cvElement.style.overflow = originalStyles.overflow;
+            
+            // Elementlerin orijinal görünürlüğünü geri yükle
+            allElements.forEach((el, index) => {
+                el.style.visibility = originalVisibility[index].visibility;
+                el.style.display = originalVisibility[index].display;
+                el.style.opacity = originalVisibility[index].opacity;
+            });
         });
     }
     
