@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern CV Maker | Profesyonel Özgeçmiş Oluşturucu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-theme">
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>CV<span>Maker</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><button id="saveBtn" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button></li>
+                    <li><button id="loadBtn" class="btn btn-secondary"><i class="fas fa-folder-open"></i> Yükle</button></li>
+                    <li><button id="exportBtn" class="btn btn-success"><i class="fas fa-file-export"></i> Dışa Aktar</button></li>
+                    <li><button id="themeToggle" class="btn btn-icon"><i class="fas fa-moon"></i></button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="cv-builder">
+                <!-- Şablon Seçimi -->
+                <div class="template-selector">
+                    <h2>CV Şablonunu Seçin</h2>
+                    <div class="templates">
+                        <div class="template-item active" data-template="minimal">
+                            <div class="template-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <span>Minimal</span>
+                        </div>
+                        <div class="template-item" data-template="professional">
+                            <div class="template-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <span>Profesyonel</span>
+                        </div>
+                        <div class="template-item" data-template="creative">
+                            <div class="template-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <span>Yaratıcı</span>
+                        </div>
+                        <div class="template-item" data-template="modern">
+                            <div class="template-icon">
+                                <i class="fas fa-stream"></i>
+                            </div>
+                            <span>Modern</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CV Düzenleme Formu -->
+                <div class="cv-editor">
+                    <h2>CV'nizi Düzenleyin</h2>
+                    
+                    <div class="editor-section" id="personalInfo">
+                        <h3><i class="fas fa-user"></i> Kişisel Bilgiler</h3>
+                        <div class="form-group">
+                            <div class="profile-photo-container">
+                                <div class="profile-photo" id="profilePhotoPreview">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <input type="file" id="profilePhoto" accept="image/*" hidden>
+                                <button class="btn btn-secondary" id="addPhotoBtn">Fotoğraf Ekle</button>
+                            </div>
+                            <div class="personal-fields">
+                                <div class="form-row">
+                                    <div class="form-control">
+                                        <label for="firstName">Ad</label>
+                                        <input type="text" id="firstName" placeholder="Adınız">
+                                    </div>
+                                    <div class="form-control">
+                                        <label for="lastName">Soyad</label>
+                                        <input type="text" id="lastName" placeholder="Soyadınız">
+                                    </div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="title">Profesyonel Başlık</label>
+                                    <input type="text" id="title" placeholder="ör. Yazılım Geliştirici, Grafik Tasarımcı">
+                                </div>
+                                <div class="form-control">
+                                    <label for="email">E-Posta</label>
+                                    <input type="email" id="email" placeholder="ornek@eposta.com">
+                                </div>
+                                <div class="form-control">
+                                    <label for="phone">Telefon</label>
+                                    <input type="tel" id="phone" placeholder="+90 (___) ___ __ __">
+                                </div>
+                                <div class="form-control">
+                                    <label for="address">Adres</label>
+                                    <textarea id="address" placeholder="Adres bilgileriniz"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="editor-section" id="profileSection">
+                        <h3><i class="fas fa-user-circle"></i> Profil</h3>
+                        <div class="form-control">
+                            <textarea id="profile" placeholder="Kendinizi kısaca tanıtın. Profesyonel geçmişiniz, yetenekleriniz ve kariyer hedefleriniz hakkında birkaç cümle yazın."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="editor-section" id="experienceSection">
+                        <h3><i class="fas fa-briefcase"></i> İş Tecrübesi</h3>
+                        <div id="experienceItems">
+                            <!-- Deneyim öğeleri buraya dinamik olarak eklenecek -->
+                        </div>
+                        <button class="btn btn-secondary add-item" id="addExperience">
+                            <i class="fas fa-plus"></i> Yeni İş Tecrübesi Ekle
+                        </button>
+                    </div>
+
+                    <div class="editor-section" id="educationSection">
+                        <h3><i class="fas fa-graduation-cap"></i> Eğitim</h3>
+                        <div id="educationItems">
+                            <!-- Eğitim öğeleri buraya dinamik olarak eklenecek -->
+                        </div>
+                        <button class="btn btn-secondary add-item" id="addEducation">
+                            <i class="fas fa-plus"></i> Yeni Eğitim Bilgisi Ekle
+                        </button>
+                    </div>
+
+                    <div class="editor-section" id="skillsSection">
+                        <h3><i class="fas fa-star"></i> Yetenekler</h3>
+                        <div class="form-control">
+                            <div class="skill-tags" id="skillTags">
+                                <!-- Yetenek etiketleri buraya dinamik olarak eklenecek -->
+                            </div>
+                            <div class="skill-input-container">
+                                <input type="text" id="skillInput" placeholder="Yetenek ekleyin ve Enter tuşuna basın">
+                                <button id="addSkill" class="btn btn-icon"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="editor-section" id="languagesSection">
+                        <h3><i class="fas fa-language"></i> Dil Becerileri</h3>
+                        <div id="languageItems">
+                            <!-- Dil öğeleri buraya dinamik olarak eklenecek -->
+                        </div>
+                        <button class="btn btn-secondary add-item" id="addLanguage">
+                            <i class="fas fa-plus"></i> Yeni Dil Ekle
+                        </button>
+                    </div>
+
+                    <div class="editor-section" id="socialSection">
+                        <h3><i class="fas fa-globe"></i> Sosyal Profiller & QR Kod</h3>
+                        <div class="form-control">
+                            <label for="linkedin">LinkedIn</label>
+                            <input type="url" id="linkedin" placeholder="https://linkedin.com/in/kullaniciadi">
+                        </div>
+                        <div class="form-control">
+                            <label for="website">Kişisel Web Sitesi</label>
+                            <input type="url" id="website" placeholder="https://websitesi.com">
+                        </div>
+                        <div class="form-control">
+                            <label for="github">GitHub</label>
+                            <input type="url" id="github" placeholder="https://github.com/kullaniciadi">
+                        </div>
+                        <div class="form-control">
+                            <label>QR Kod Ekle</label>
+                            <div class="qr-options">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="includeQR">
+                                    <span>CV'me QR kod ekle</span>
+                                </label>
+                                <select id="qrType" disabled>
+                                    <option value="linkedin">LinkedIn Profili</option>
+                                    <option value="website">Web Sitesi</option>
+                                    <option value="contact">İletişim Bilgileri</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="editor-section" id="customizationSection">
+                        <h3><i class="fas fa-paint-brush"></i> Özelleştirme</h3>
+                        <div class="form-control">
+                            <label>Renk Şeması</label>
+                            <div class="color-picker">
+                                <div class="color-option" data-color="#2563eb" style="background-color: #2563eb;"></div>
+                                <div class="color-option" data-color="#10b981" style="background-color: #10b981;"></div>
+                                <div class="color-option" data-color="#f59e0b" style="background-color: #f59e0b;"></div>
+                                <div class="color-option" data-color="#ef4444" style="background-color: #ef4444;"></div>
+                                <div class="color-option" data-color="#8b5cf6" style="background-color: #8b5cf6;"></div>
+                                <div class="color-option" data-color="#6b7280" style="background-color: #6b7280;"></div>
+                            </div>
+                        </div>
+                        <div class="form-control">
+                            <label>Yazı Tipi</label>
+                            <select id="fontFamily">
+                                <option value="'Roboto', sans-serif">Roboto</option>
+                                <option value="'Open Sans', sans-serif">Open Sans</option>
+                                <option value="'Montserrat', sans-serif">Montserrat</option>
+                                <option value="'Poppins', sans-serif">Poppins</option>
+                                <option value="'Raleway', sans-serif">Raleway</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CV Önizleme -->
+                <div class="cv-preview">
+                    <h2>CV Önizleme <button id="fullPreviewBtn" class="btn btn-small"><i class="fas fa-expand"></i></button></h2>
+                    
+                    <div class="preview-container" id="previewContainer">
+                        <!-- CV önizleme içeriği dinamik olarak burada gösterilecek -->
+                        <div class="cv-document" id="cvDocument">
+                            <div class="cv-header">
+                                <div class="cv-photo" id="cvPhoto">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="cv-title-section">
+                                    <h1 class="cv-name"><span id="previewFirstName">Ad</span> <span id="previewLastName">Soyad</span></h1>
+                                    <p class="cv-title" id="previewTitle">Profesyonel Başlık</p>
+                                </div>
+                            </div>
+                            
+                            <div class="cv-sidebar">
+                                <div class="cv-sidebar-section contact-section">
+                                    <h3>İletişim</h3>
+                                    <ul class="cv-contact-list">
+                                        <li><i class="fas fa-envelope"></i> <span id="previewEmail">ornek@eposta.com</span></li>
+                                        <li><i class="fas fa-phone"></i> <span id="previewPhone">+90 (___) ___ __ __</span></li>
+                                        <li><i class="fas fa-map-marker-alt"></i> <span id="previewAddress">Adres bilgileriniz</span></li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="cv-sidebar-section skills-section">
+                                    <h3>Yetenekler</h3>
+                                    <div class="cv-skills" id="previewSkills">
+                                        <!-- Yetenek önizlemesi burada gösterilecek -->
+                                    </div>
+                                </div>
+                                
+                                <div class="cv-sidebar-section languages-section">
+                                    <h3>Diller</h3>
+                                    <ul class="cv-languages" id="previewLanguages">
+                                        <!-- Dil önizlemesi burada gösterilecek -->
+                                    </ul>
+                                </div>
+                                
+                                <div class="cv-sidebar-section social-section">
+                                    <h3>Sosyal Profiller</h3>
+                                    <ul class="cv-social-list">
+                                        <li id="previewLinkedin" style="display: none;"><i class="fab fa-linkedin"></i> <span>LinkedIn</span></li>
+                                        <li id="previewWebsite" style="display: none;"><i class="fas fa-globe"></i> <span>Web Sitesi</span></li>
+                                        <li id="previewGithub" style="display: none;"><i class="fab fa-github"></i> <span>GitHub</span></li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="cv-sidebar-section qr-section" id="previewQRSection" style="display: none;">
+                                    <h3>Dijital İletişim</h3>
+                                    <div class="cv-qr-code" id="previewQR">
+                                        <!-- QR kod önizlemesi burada gösterilecek -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="cv-main">
+                                <div class="cv-main-section profile-section">
+                                    <h2>Profil</h2>
+                                    <p id="previewProfile">Kendinizi tanıtan kısa bir paragraf.</p>
+                                </div>
+                                
+                                <div class="cv-main-section experience-section">
+                                    <h2>İş Tecrübesi</h2>
+                                    <div id="previewExperience">
+                                        <!-- İş tecrübesi önizlemesi burada gösterilecek -->
+                                        <p class="empty-notice">Henüz iş tecrübesi eklenmedi</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="cv-main-section education-section">
+                                    <h2>Eğitim</h2>
+                                    <div id="previewEducation">
+                                        <!-- Eğitim önizlemesi burada gösterilecek -->
+                                        <p class="empty-notice">Henüz eğitim bilgisi eklenmedi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PDF Export Modal -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Dışa Aktar</h2>
+            <div class="export-options">
+                <button class="btn btn-primary" id="exportPDF">
+                    <i class="fas fa-file-pdf"></i> PDF Olarak İndir
+                </button>
+                <button class="btn btn-primary" id="exportPNG">
+                    <i class="fas fa-file-image"></i> PNG Olarak İndir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Preview Modal -->
+    <div class="modal" id="fullPreviewModal">
+        <div class="modal-content large-modal">
+            <span class="close-modal">&times;</span>
+            <h2>Tam Önizleme</h2>
+            <div class="full-preview-container" id="fullPreviewContainer">
+                <!-- Tam boyutlu CV önizlemesi burada gösterilecek -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Kaydedilen CV'ler Modal -->
+    <div class="modal" id="savedCVsModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Kaydedilen CV'ler</h2>
+            <div class="saved-cvs-list" id="savedCVsList">
+                <!-- Kaydedilen CV'ler burada listelenecek -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Yeni İş Tecrübesi Şablonu (gizli, JS ile klonlanıp kullanılacak) -->
+    <template id="experienceTemplate">
+        <div class="experience-item">
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Şirket</label>
+                    <input type="text" class="company" placeholder="Şirket Adı">
+                </div>
+                <div class="form-control">
+                    <label>Pozisyon</label>
+                    <input type="text" class="position" placeholder="Pozisyon / Unvan">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Başlangıç Tarihi</label>
+                    <input type="month" class="startDate">
+                </div>
+                <div class="form-control">
+                    <label>Bitiş Tarihi</label>
+                    <div class="end-date-group">
+                        <input type="month" class="endDate">
+                        <label class="checkbox">
+                            <input type="checkbox" class="currentJob">
+                            <span>Halen Çalışıyorum</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-control">
+                <label>Açıklama</label>
+                <textarea class="description" placeholder="Pozisyondaki görev ve sorumluluklarınız"></textarea>
+            </div>
+            <button class="btn btn-danger remove-item">
+                <i class="fas fa-trash"></i> Kaldır
+            </button>
+        </div>
+    </template>
+
+    <!-- Yeni Eğitim Şablonu (gizli, JS ile klonlanıp kullanılacak) -->
+    <template id="educationTemplate">
+        <div class="education-item">
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Okul / Üniversite</label>
+                    <input type="text" class="school" placeholder="Okul / Üniversite Adı">
+                </div>
+                <div class="form-control">
+                    <label>Derece / Bölüm</label>
+                    <input type="text" class="degree" placeholder="ör. Lisans, Bilgisayar Mühendisliği">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Başlangıç Tarihi</label>
+                    <input type="month" class="startDate">
+                </div>
+                <div class="form-control">
+                    <label>Bitiş Tarihi</label>
+                    <div class="end-date-group">
+                        <input type="month" class="endDate">
+                        <label class="checkbox">
+                            <input type="checkbox" class="currentEducation">
+                            <span>Devam Ediyor</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-control">
+                <label>Açıklama</label>
+                <textarea class="description" placeholder="Eğitim hayatınızla ilgili ek bilgiler, başarılar vb."></textarea>
+            </div>
+            <button class="btn btn-danger remove-item">
+                <i class="fas fa-trash"></i> Kaldır
+            </button>
+        </div>
+    </template>
+
+    <!-- Dil Şablonu (gizli, JS ile klonlanıp kullanılacak) -->
+    <template id="languageTemplate">
+        <div class="language-item">
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Dil</label>
+                    <input type="text" class="language" placeholder="ör. İngilizce, Almanca, vb.">
+                </div>
+                <div class="form-control">
+                    <label>Seviye</label>
+                    <select class="proficiency">
+                        <option value="Başlangıç">Başlangıç</option>
+                        <option value="Orta">Orta</option>
+                        <option value="İyi">İyi</option>
+                        <option value="İleri">İleri</option>
+                        <option value="Anadil">Anadil</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-danger remove-item">
+                <i class="fas fa-trash"></i> Kaldır
+            </button>
+        </div>
+    </template>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
