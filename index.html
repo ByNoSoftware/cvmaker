@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -177,7 +177,8 @@
                                 <select id="qrType" disabled>
                                     <option value="linkedin">LinkedIn Profili</option>
                                     <option value="website">Web Sitesi</option>
-                                    <option value="contact">İletişim Bilgileri</option>
+                                    <option value="github">Github</option>
+                                    <option value="vcard">İletişim Bilgileri</option>
                                 </select>
                             </div>
                         </div>
@@ -301,13 +302,17 @@
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <h2>Dışa Aktar</h2>
+            <p class="export-info">CV'nizi dışa aktarmak için bir format seçin. PDF, doküman olarak kullanmak için idealdir. PNG, çevrimiçi paylaşmak için uygundur.</p>
             <div class="export-options">
                 <button class="btn btn-primary" id="exportPDF">
-                    <i class="fas fa-file-pdf"></i> PDF Olarak İndir
+                    <i class="fas fa-file-pdf"></i> PDF Olarak İndir (A4)
                 </button>
                 <button class="btn btn-primary" id="exportPNG">
                     <i class="fas fa-file-image"></i> PNG Olarak İndir
                 </button>
+            </div>
+            <div class="export-note">
+                <p><i class="fas fa-info-circle"></i> Not: Dışa aktarma işlemi birkaç saniye sürebilir.</p>
             </div>
         </div>
     </div>
@@ -316,7 +321,7 @@
     <div class="modal" id="fullPreviewModal">
         <div class="modal-content large-modal">
             <span class="close-modal">&times;</span>
-            <h2>Tam Önizleme</h2>
+            <h2>Tam Önizleme <small>(A4 formatında)</small></h2>
             <div class="full-preview-container" id="fullPreviewContainer">
                 <!-- Tam boyutlu CV önizlemesi burada gösterilecek -->
             </div>
@@ -440,6 +445,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
