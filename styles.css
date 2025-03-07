@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -1341,4 +1341,244 @@ textarea {
 
 :root {
     --primary-color-rgb: 37, 99, 235; /* #2563eb */
+}
+
+@media print, (min-width: 794px) {
+    .cv-document {
+        width: 794px; /* A4 genişliği piksel cinsinden */
+        min-height: 1123px; /* A4 yüksekliği piksel cinsinden */
+        margin: 0 auto;
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+    
+    .cv-header {
+        page-break-inside: avoid;
+    }
+    
+    .cv-main-section {
+        page-break-inside: avoid;
+    }
+    
+    .cv-sidebar-section {
+        page-break-inside: avoid;
+    }
+}
+
+/* Tam Önizleme modalı için stillemeler */
+.modal-content.large-modal {
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    padding: 30px;
+}
+
+.full-preview-container {
+    overflow-y: auto;
+    max-height: calc(90vh - 100px);
+    display: flex;
+    justify-content: center;
+}
+
+.full-preview-container .cv-document {
+    width: 100%;
+    max-width: 794px; /* A4 genişliği */
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Dışa aktarma modal stillemeleri */
+#exportModal .modal-content {
+    max-width: 400px;
+}
+
+#exportModal .export-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#exportModal .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#exportModal .btn i {
+    font-size: 20px;
+}
+
+/* Kağıt formatı belirtmek için ek stil */
+.cv-document {
+    position: relative;
+    aspect-ratio: 1 / 1.414; /* A4 oranı */
+    box-sizing: border-box;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .cv-document, .cv-document * {
+        visibility: visible;
+    }
+    
+    .cv-document {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Mod-specific fixes for dark theme */
+.dark-theme .modal-content {
+    background-color: var(--card-color);
+}
+
+.dark-theme .full-preview-container .cv-document {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Modal içindeki önizleme için stiller */
+.modal-content.large-modal {
+    max-width: 850px;
+    width: 90%;
+    max-height: 90vh;
+    padding: 20px;
+    overflow: auto;
+}
+
+.full-preview-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    min-height: 500px;
+}
+
+#fullPreviewContainer .cv-document {
+    width: 794px !important; /* A4 genişliği - HTML2Canvas için kesin genişlik */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    background: white;
+}
+
+/* Yazdırma ve dışa aktarma için özel stiller */
+@media print {
+    .cv-document {
+        width: 210mm; /* A4 genişliği */
+        height: 297mm; /* A4 yüksekliği */
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    .cv-header, .cv-sidebar, .cv-main {
+        page-break-inside: avoid;
+    }
+}
+
+/* Dışa aktarma için görünürlük ve opaklık düzeltmeleri */
+.cv-document * {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Düzenin bozulmaması için ek kontroller */
+.cv-document {
+    page-break-inside: avoid;
+    position: relative;
+}
+
+.cv-main-section, .cv-sidebar-section {
+    page-break-inside: avoid;
+}
+
+/* Yüksek kalitede görüntü için yazı tipi ve çizgi kalınlıkları */
+.cv-document {
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.cv-document h1, .cv-document h2, .cv-document h3 {
+    font-weight: 600;
+}
+
+/* Dışa aktarma esnasında daha iyi okunabilirlik */
+.cv-item-description, .cv-profile {
+    line-height: 1.5;
+}
+
+/* Taşma sorunlarını önlemek */
+.cv-experience-item, .cv-education-item {
+    overflow: visible;
+}
+
+/* Dışa aktarma için ek CSS */
+
+/* Tüm elementleri görünür yap */
+.cv-document.export-mode * {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+/* Dışa aktarma için gizli bölümleri görünür yap */
+.cv-document.export-mode .cv-sidebar-section,
+.cv-document.export-mode .cv-main-section {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Dışa aktarma öncesi tüm içeriğin uygun boyutlarda olmasını sağla */
+.cv-document.export-mode {
+    min-height: 1123px; /* A4 yüksekliği */
+    height: auto !important;
+    width: 794px !important; /* A4 genişliği */
+    position: relative !important;
+    overflow: visible !important;
+    page-break-inside: avoid;
+    background: white !important;
+}
+
+/* Taşma sorunlarını önlemek */
+.cv-document.export-mode .cv-main,
+.cv-document.export-mode .cv-sidebar {
+    overflow: visible !important;
+    height: auto !important;
+}
+
+/* Metin okunabilirliği için font ve çizgi kalınlığı ayarları */
+.cv-document.export-mode .cv-name,
+.cv-document.export-mode h1,
+.cv-document.export-mode h2,
+.cv-document.export-mode h3 {
+    font-weight: 600 !important;
+}
+
+.cv-document.export-mode p,
+.cv-document.export-mode li,
+.cv-document.export-mode span {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+/* Bölüm aralıkları */
+.cv-document.export-mode .cv-main-section,
+.cv-document.export-mode .cv-sidebar-section {
+    margin-bottom: 20px !important;
+    page-break-inside: avoid;
+}
+
+/* Sayfa kenarlarından taşma sorunlarını önlemek için padding ayarları */
+.cv-document.export-mode .cv-main,
+.cv-document.export-mode .cv-sidebar {
+    padding: 20px 15px !important;
 }
