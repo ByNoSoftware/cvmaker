@@ -22,17 +22,17 @@ Modern CV Maker, kullanıcıların kolayca profesyonel özgeçmişler oluşturab
 
 ![HTML5](https://rozet.vixware.net/HTML5/Sayfan%C4%B1n%20yap%C4%B1s%C4%B1%20i%C3%A7in/blue)
 
-![CSS3](https://rozet.vixware.net/CSS3/Stillendirme%20ve%20g%C3%B6rsel%20tasar%C4%B1m%20i%C3%A7in/blue)
+![CSS3](https://rozet.vixware.net/CSS3/Stillendirme%20ve%20g%C3%B6rsel%20tasar%C4%B1m%20i%C3%A7in/brightgreen)
 
-![JavaScript (ES6+)](https://rozet.vixware.net/JavaScript%20(ES6%2B)/Uygulama%20mant%C4%B1%C4%9F%C4%B1%20ve%20etkile%C5%9Fimler%20i%C3%A7in/blue)
+![JavaScript (ES6+)](https://rozet.vixware.net/JavaScript%20(ES6%2B)/Uygulama%20mant%C4%B1%C4%9F%C4%B1%20ve%20etkile%C5%9Fimler%20i%C3%A7in/red)
 
-![Local Storage API](https://rozet.vixware.net/Local%20Storage%20API/Taray%C4%B1c%C4%B1%20taraf%C4%B1nda%20veri%20saklama%20i%C3%A7in/blue)
+![Local Storage API](https://rozet.vixware.net/Local%20Storage%20API/Taray%C4%B1c%C4%B1%20taraf%C4%B1nda%20veri%20saklama%20i%C3%A7in/orange)
 
-![jsPDF & html2canvas](https://rozet.vixware.net/jsPDF%20%26%20html2canvas/PDF%20ve%20resim%20d%C4%B1%C5%9Fa%20aktarma%20i%C3%A7in/blue)
+![jsPDF & html2canvas](https://rozet.vixware.net/jsPDF%20%26%20html2canvas/PDF%20ve%20resim%20d%C4%B1%C5%9Fa%20aktarma%20i%C3%A7in/yellow)
 
-![QRCode.js](https://rozet.vixware.net/QRCode.js/QR%20kod%20olu%C5%9Fturma%20i%C3%A7in/blue)
+![QRCode.js](https://rozet.vixware.net/QRCode.js/QR%20kod%20olu%C5%9Fturma%20i%C3%A7in/purple)
 
-![Font Awesome](https://rozet.vixware.net/Font%20Awesome/%C4%B0konlar%20i%C3%A7in/blue)
+![Font Awesome](https://rozet.vixware.net/Font%20Awesome/%C4%B0konlar%20i%C3%A7in/pink)
 
 ## 🚀 Başlangıç
 
